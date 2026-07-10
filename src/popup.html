@@ -1,0 +1,181 @@
+·<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backlink Helper</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <button id="menuBtn" class="icon-btn" title="菜单">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <h1 class="header-title">Backlink Helper</h1>
+      <button id="settingsBtn" class="icon-btn" title="API 设置">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </header>
+
+    <nav class="top-tabs" aria-label="功能切换">
+      <button class="top-tab active" data-page="main">评论</button>
+      <button class="top-tab" data-page="links">外链</button>
+    </nav>
+
+    <section id="licensePanel" class="license-panel">
+      <div class="license-header">
+        <div>
+          <div class="license-title">授权与外链范围</div>
+          <div id="licenseQuotaText" class="license-quota">免费版前 50 条外链不限次数使用</div>
+        </div>
+        <span id="licenseBadge" class="license-badge">未授权</span>
+      </div>
+      <div class="license-form">
+        <input id="licenseCodeInput" class="license-input" type="text" placeholder="输入授权码">
+        <button id="verifyLicenseBtn" class="license-btn">验证授权码</button>
+      </div>
+      <div id="licenseMessage" class="license-message">需要第 51 条及之后的外链时，输入授权码解锁全部外链。</div>
+    </section>
+
+    <div id="mainPage" class="page active">
+      <section class="card">
+        <div class="card-header">
+          <span class="card-title">评论信息</span>
+          <button id="copyAllBtn" class="copy-all-btn">复制全部</button>
+        </div>
+
+        <div class="selector-row">
+          <select id="siteSelector" class="site-selector">
+            <option value="default">默认配置</option>
+          </select>
+          <button id="prevSiteBtn" class="nav-btn" title="上一个">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button id="nextSiteBtn" class="nav-btn" title="下一个">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <div class="info-list">
+          <div class="info-row">
+            <span class="info-label">名称</span>
+            <input class="info-input" id="infoName" type="text" placeholder="Name">
+            <button class="copy-btn" data-field="name">复制</button>
+          </div>
+          <div class="info-row">
+            <span class="info-label">邮箱</span>
+            <input class="info-input" id="infoEmail" type="email" placeholder="Email">
+            <button class="copy-btn" data-field="email">复制</button>
+          </div>
+          <div class="info-row">
+            <span class="info-label">网站</span>
+            <input class="info-input" id="infoUrl" type="text" placeholder="https://">
+            <button class="copy-btn" data-field="url">复制</button>
+          </div>
+          <div class="info-row">
+            <span class="info-label">关键词</span>
+            <textarea class="info-textarea" id="infoText" rows="2" placeholder="用逗号分隔的关键词"></textarea>
+            <button class="copy-btn" data-field="text">复制</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card link-options-card">
+        <div class="link-options-title">链接格式</div>
+        <div class="link-options">
+          <label class="radio-label">
+            <input type="radio" name="linkFormat" value="html" class="radio-input">
+            <span class="radio-text">HTML</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="linkFormat" value="markdown" class="radio-input">
+            <span class="radio-text">Markdown</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="linkFormat" value="bbcode" class="radio-input" checked>
+            <span class="radio-text">BBCode</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="linkFormat" value="plain" class="radio-input">
+            <span class="radio-text">纯URL</span>
+          </label>
+        </div>
+      </section>
+
+      <div class="action-buttons">
+        <div class="button-row">
+          <button id="contentCommentBtn" class="action-btn outline">内容评论</button>
+          <button id="linkCommentBtn" class="action-btn primary">带链接评论</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="linksPage" class="page">
+      <section class="link-workspace">
+        <div class="link-toolbar">
+          <div class="toolbar-line">
+            <label>打开链接：打开从</label>
+            <input id="openStartInput" class="mini-input" type="number" min="0" value="0">
+            <label>开始的</label>
+            <input id="openCountInput" class="mini-input" type="number" min="1" max="20" value="5">
+            <label>个链接</label>
+            <button id="openRangeLinksBtn" class="refresh-btn" title="按范围打开">↻</button>
+          </div>
+          <button id="openSelectedLinksBtn" class="action-btn primary full-width">打开选中的链接</button>
+          <input id="linkSearchInput" class="link-search" type="search" placeholder="搜索域名、URL、类型">
+          <div class="link-list-actions">
+            <span id="selectedLinkCount">已选 0 / 0</span>
+            <button id="selectAllVisibleLinksBtn" class="text-btn">选择当前列表</button>
+            <button id="clearLinkSelectionBtn" class="text-btn">清空选择</button>
+          </div>
+        </div>
+        <div class="external-link-table" id="externalLinkList"></div>
+        <div class="link-pagination">
+          <span id="linkPaginationInfo">共 0 条，显示 0-0</span>
+          <div class="link-pagination-controls">
+            <button id="prevLinkPageBtn" class="page-btn">上一页</button>
+            <span id="linkPageIndicator" class="page-indicator">1 / 1</span>
+            <button id="nextLinkPageBtn" class="page-btn">下一页</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="sideMenu" class="side-menu">
+      <div class="side-menu-overlay"></div>
+      <div class="side-menu-content">
+        <div class="side-menu-header">
+          <h3>菜单</h3>
+          <button id="closeMenuBtn" class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <nav class="side-menu-nav">
+          <a href="#" class="menu-item active" data-page="main"><span>评论信息</span></a>
+          <a href="#" class="menu-item" data-page="links"><span>外链列表</span></a>
+        </nav>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script src="external-links-data.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

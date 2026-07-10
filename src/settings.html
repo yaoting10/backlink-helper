@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Backlink Helper - 设置</title>
+  <style>
+    /* ==================== 轻量浅色本地版主题 ==================== */
+    :root {
+      /* 主色调 - 霓虹蓝 */
+      --neon-blue: #1677ff;
+      --neon-blue-light: #4096ff;
+      --neon-blue-dark: #0958d9;
+      --electric-blue: #1677ff;
+      --deep-blue: #0958d9;
+      
+      /* 背景色 - 深色科技风 */
+      --bg-primary: #f5f7fb;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #eef4ff;
+      --bg-card: rgba(255, 255, 255, 0.96);
+      --bg-hover: rgba(22, 119, 255, 0.06);
+      
+      /* 文字颜色 */
+      --text-primary: #1f2937;
+      --text-secondary: #667085;
+      --text-muted: #98a2b3;
+      
+      /* 边框和分割线 */
+      --border-color: #dbe7ff;
+      --divider-color: #e9eef7;
+      
+      /* 功能色 */
+      --success-color: #16a34a;
+      --error-color: #dc2626;
+      
+      /* 发光效果 */
+      --glow-blue: 0 6px 20px rgba(22, 119, 255, 0.12);
+      --glow-text: none;
+      
+      /* 渐变 */
+      --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #1677ff 100%);
+      --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      width: 100%;
+      min-height: 100vh;
+      padding: 40px clamp(20px, 5vw, 72px);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      margin: 0 auto;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      line-height: 1.5;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* 科技背景纹理 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(ellipse at top, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(0, 102, 255, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    h1 {
+      color: var(--neon-blue);
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-shadow: var(--glow-text);
+      letter-spacing: 0.5px;
+    }
+    
+    .description {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 30px;
+    }
+
+    .settings-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 6px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+    }
+
+    .settings-tab {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 8px;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .settings-tab.active {
+      background: var(--gradient-blue);
+      color: #fff;
+      box-shadow: var(--glow-blue);
+    }
+
+    .settings-tab-panel {
+      display: none;
+    }
+
+    .settings-tab-panel.active {
+      display: block;
+    }
+    
+    .card {
+      background: var(--gradient-card);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .admin-toolbar {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .admin-search-row {
+      display: flex;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .admin-search-row input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .admin-stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .admin-stat {
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--bg-tertiary);
+      color: var(--neon-blue);
+      font-weight: 600;
+    }
+
+    .admin-table-wrap {
+      border: 1px solid #111827;
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 14px;
+    }
+
+    .admin-table th,
+    .admin-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #111827;
+      color: var(--text-primary);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .admin-table th {
+      font-weight: 700;
+      background: rgba(238, 244, 255, 0.78);
+    }
+
+    .admin-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .admin-table tbody tr {
+      cursor: pointer;
+    }
+
+    .admin-table tbody tr:hover,
+    .admin-table tbody tr.active {
+      background: var(--bg-hover);
+    }
+
+    .table-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .table-muted {
+      color: var(--text-secondary);
+    }
+
+    .type-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: #e7f0ff;
+      color: var(--neon-blue);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .row-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .row-action {
+      border: 0;
+      background: transparent;
+      color: var(--neon-blue);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 4px 2px;
+    }
+
+    .row-action.danger {
+      color: var(--error-color);
+    }
+
+    .external-link-admin-table th:last-child,
+    .external-link-admin-table td:last-child {
+      text-align: center;
+    }
+
+    .external-link-admin-table .row-actions {
+      justify-content: center;
+    }
+
+    .locked-link-note {
+      margin: -4px 0 14px;
+      padding: 10px 12px;
+      border: 1px dashed #f59e0b;
+      border-radius: 10px;
+      background: #fffaf0;
+      color: #92400e;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .locked-link-note.authorized {
+      border-color: #22c55e;
+      background: #f0fdf4;
+      color: #15803d;
+    }
+
+    .admin-table tr.locked-row {
+      cursor: default;
+      opacity: 0.64;
+      background: #fffdf5;
+    }
+
+    .admin-table tr.locked-row:hover {
+      background: #fffdf5;
+    }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 16px;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .page-indicator {
+      min-width: 58px;
+      text-align: center;
+      color: #475467;
+      font-weight: 600;
+    }
+
+    .page-btn {
+      padding: 8px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .page-btn:not(:disabled):hover {
+      color: var(--neon-blue);
+      border-color: var(--neon-blue);
+      box-shadow: var(--glow-blue);
+    }
+
+    .page-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    
+    .card:hover {
+      border-color: rgba(0, 212, 255, 0.4);
+      box-shadow: 
+        0 4px 25px rgba(0, 212, 255, 0.1),
+        0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 20px 0;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--divider-color);
+      color: var(--neon-blue);
+      text-shadow: var(--glow-text);
+      letter-spacing: 0.5px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neon-blue);
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    input[type="password"],
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 15px;
+      color: var(--text-primary);
+      background: var(--bg-secondary);
+      transition: all 0.2s ease;
+    }
+    
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="url"]:focus,
+    input[type="password"]:focus,
+    select:focus {
+      border-color: var(--neon-blue);
+      outline: none;
+      box-shadow: var(--glow-blue);
+    }
+    
+    input[type="text"]::placeholder,
+    input[type="email"]::placeholder,
+    input[type="url"]::placeholder,
+    input[type="password"]::placeholder {
+      color: var(--text-muted);
+    }
+    
+    select {
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%2300d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+    
+    select option {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+    
+    .input-with-btn {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .input-with-btn input {
+      flex: 1;
+    }
+    
+    .input-with-toggle {
+      position: relative;
+    }
+    
+    .input-with-toggle input {
+      padding-right: 45px;
+    }
+    
+    .toggle-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    
+    .toggle-btn:hover {
+      color: var(--neon-blue);
+      filter: drop-shadow(0 0 3px rgba(0, 212, 255, 0.5));
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      border-radius: 980px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+    
+    .btn-primary {
+      background: var(--gradient-blue);
+      color: white;
+      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-primary:hover {
+      box-shadow: var(--glow-blue);
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--neon-blue);
+      border: 1px solid var(--neon-blue);
+      text-shadow: var(--glow-text);
+      box-shadow: 0 0 5px rgba(0, 212, 255, 0.2);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--bg-hover);
+      box-shadow: var(--glow-blue);
+      transform: translateY(-2px);
+    }
+    
+    .btn-full {
+      width: 100%;
+    }
+    
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    
+    .api-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+    }
+    
+    .api-link a {
+      color: var(--neon-blue);
+      text-decoration: none;
+      font-weight: 500;
+      text-shadow: var(--glow-text);
+      transition: all 0.2s ease;
+    }
+    
+    .api-link a:hover {
+      text-decoration: underline;
+      filter: brightness(1.2);
+    }
+    
+    .provider-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--neon-blue);
+      border: 1px solid var(--border-color);
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 600;
+      text-shadow: var(--glow-text);
+    }
+    
+    .model-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+    
+    .test-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    
+    .test-status {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .test-status.success {
+      color: var(--success-color);
+      text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+    }
+    
+    .test-status.error {
+      color: var(--error-color);
+      text-shadow: 0 0 5px rgba(255, 51, 102, 0.5);
+    }
+    
+    .import-export-container {
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+    }
+    
+    .import-export-tip {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin: 0 0 12px 0;
+    }
+    
+    .import-export-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 20px 12px;
+      }
+
+      .admin-toolbar,
+      .admin-search-row {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+
+      .admin-table {
+        min-width: 760px;
+      }
+
+      .admin-table-wrap {
+        overflow-x: auto;
+      }
+
+      .pagination {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 8px;
+      align-items: center;
+      padding: 12px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--divider-color);
+      border-radius: 10px;
+    }
+
+    .item-main {
+      min-width: 0;
+    }
+
+    .item-title {
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .item-subtitle {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin-top: 3px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .btn-container {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 30px;
+    }
+    
+    .success-message {
+      background: rgba(0, 255, 136, 0.15);
+      color: var(--success-color);
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-size: 14px;
+      display: none;
+      animation: fadeIn 0.3s;
+      border: 1px solid var(--success-color);
+      box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+      text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+    }
+    
+    .success-message.show {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* 网站管理样式 */
+    .website-selector-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    .website-selector-row select {
+      flex: 1;
+    }
+    
+    .nav-btns {
+      display: flex;
+      gap: 4px;
+    }
+    
+    .nav-btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+    
+    .nav-btn:hover {
+      background: var(--bg-hover);
+      color: var(--neon-blue);
+      border-color: var(--neon-blue);
+      box-shadow: var(--glow-blue);
+    }
+    
+    .info-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      margin-top: 16px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    
+    .info-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: linear-gradient(to right, rgba(0, 212, 255, 0.1), transparent);
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .info-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--neon-blue);
+      text-shadow: var(--glow-text);
+    }
+    
+    .copy-all-btn {
+      font-size: 13px;
+      color: var(--neon-blue);
+      background: none;
+      border: 1px solid var(--neon-blue);
+      padding: 4px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-shadow: var(--glow-text);
+      box-shadow: 0 0 5px rgba(0, 212, 255, 0.2);
+    }
+    
+    .copy-all-btn:hover {
+      background: var(--bg-hover);
+      box-shadow: var(--glow-blue);
+    }
+    
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--divider-color);
+      transition: all 0.2s;
+    }
+    
+    .info-row:hover {
+      background: var(--bg-hover);
+    }
+    
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    
+    .info-label {
+      font-size: 13px;
+      color: var(--neon-blue);
+      font-weight: 500;
+      min-width: 50px;
+    }
+    
+    .info-value {
+      flex: 1;
+      font-size: 14px;
+      color: var(--text-primary);
+      margin-left: 16px;
+      word-break: break-all;
+    }
+    
+    .copy-btn {
+      font-size: 13px;
+      color: var(--neon-blue);
+      background: none;
+      border: 1px solid var(--neon-blue);
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 4px 8px;
+      margin-left: 12px;
+      transition: all 0.2s;
+      text-shadow: var(--glow-text);
+    }
+    
+    .copy-btn:hover {
+      background: var(--bg-hover);
+      box-shadow: var(--glow-blue);
+    }
+    
+    
+    
+    
+    .link-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .link-option:hover {
+      color: var(--neon-blue);
+    }
+    
+    .link-option input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--neon-blue);
+    }
+    
+    .link-option span {
+      font-size: 14px;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+    
+    .link-option:hover span,
+    .link-option input[type="radio"]:checked + span {
+      color: var(--neon-blue);
+      text-shadow: var(--glow-text);
+    }
+    
+    /* 操作按钮组 */
+    
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--neon-blue);
+      color: var(--neon-blue);
+      text-shadow: var(--glow-text);
+      box-shadow: 0 0 5px rgba(0, 212, 255, 0.2);
+    }
+    
+    .btn-outline:hover {
+      background: var(--bg-hover);
+      box-shadow: var(--glow-blue);
+    }
+    
+    
+    
+    /* 编辑器 */
+    .website-editor {
+      margin-top: 20px;
+      padding: 20px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    
+    .website-editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .website-editor-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--neon-blue);
+      text-shadow: var(--glow-text);
+    }
+
+    .editor-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .close-editor-btn {
+      height: 30px;
+      padding: 0 12px;
+      border: 1px solid var(--neon-blue);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--neon-blue);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .close-editor-btn:hover {
+      background: var(--bg-hover);
+      box-shadow: var(--glow-blue);
+    }
+    
+    .delete-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      padding: 5px;
+      transition: all 0.2s;
+      border-radius: 4px;
+    }
+    
+    .delete-btn:hover {
+      color: var(--error-color);
+      background: rgba(255, 51, 102, 0.1);
+      box-shadow: 0 0 8px rgba(255, 51, 102, 0.3);
+    }
+    
+    /* 滚动条美化 */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--neon-blue);
+    }
+  </style>
+</head>
+<body>
+  <h1>AI评论助手 - 设置</h1>
+  <p class="description">配置您的API密钥和网站信息，让AI帮您生成更好的评论内容。</p>
+
+  <nav class="settings-tabs" aria-label="设置分类">
+    <button class="settings-tab active" data-tab="comments">站点评论</button>
+    <button class="settings-tab" data-tab="links">外链</button>
+    <button class="settings-tab" data-tab="model">模型连接</button>
+  </nav>
+
+  <div id="commentsTab" class="settings-tab-panel active">
+  <div class="card">
+    <h2 class="section-title">网站管理</h2>
+
+    <div class="admin-toolbar">
+      <div class="admin-search-row">
+        <input type="text" id="websiteSearchInput" placeholder="按名称搜索站点">
+        <button class="btn btn-secondary" id="addWebsiteBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          添加站点
+        </button>
+      </div>
+      <div class="admin-stats">
+        <span>全部 <span class="admin-stat" id="websiteTotalCount">0</span></span>
+        <span>当前筛选 <span class="admin-stat" id="websiteFilteredCount">0</span></span>
+      </div>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <colgroup>
+          <col style="width: 24%;">
+          <col style="width: 18%;">
+          <col style="width: 28%;">
+          <col style="width: 18%;">
+          <col style="width: 12%;">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>名称</th>
+            <th>邮箱</th>
+            <th>网站</th>
+            <th>关键词</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="websiteTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <span id="websitePaginationInfo">共 0 条，显示 0-0</span>
+      <div class="pagination-controls">
+        <button class="page-btn" id="websitePrevPageBtn">上一页</button>
+        <span class="page-indicator" id="websitePageIndicator">1 / 1</span>
+        <button class="page-btn" id="websiteNextPageBtn">下一页</button>
+      </div>
+    </div>
+    
+    <div class="form-group" style="display: none;">
+      <div class="website-selector-row">
+        <select id="websiteSelector">
+          <option value="">-- 选择网站 --</option>
+        </select>
+        <div class="nav-btns">
+          <button class="nav-btn" id="prevWebsiteBtn" title="上一个">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button class="nav-btn" id="nextWebsiteBtn" title="下一个">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="info-card" id="websiteInfoCard" style="display: none;">
+      <div class="info-card-header">
+        <span class="info-card-title">评论信息</span>
+        <div>
+          <button class="copy-all-btn" id="editWebsiteBtn">编辑</button>
+          <button class="copy-all-btn" id="copyAllBtn">复制全部</button>
+        </div>
+      </div>
+      <div class="info-row">
+        <span class="info-label">名称</span>
+        <span class="info-value" id="infoName">-</span>
+        <button class="copy-btn" data-field="name">复制</button>
+      </div>
+      <div class="info-row">
+        <span class="info-label">邮箱</span>
+        <span class="info-value" id="infoEmail">-</span>
+        <button class="copy-btn" data-field="email">复制</button>
+      </div>
+      <div class="info-row">
+        <span class="info-label">网站</span>
+        <span class="info-value" id="infoUrl">-</span>
+        <button class="copy-btn" data-field="url">复制</button>
+      </div>
+      <div class="info-row">
+        <span class="info-label">关键词</span>
+        <span class="info-value" id="infoDesc">-</span>
+        <button class="copy-btn" data-field="desc">复制</button>
+      </div>
+    </div>
+    <div class="website-editor" id="websiteEditor" style="display: none;">
+      <div class="website-editor-header">
+        <span class="website-editor-title" id="editorTitle">编辑网站</span>
+        <button class="delete-btn" id="deleteWebsiteBtn" title="删除网站">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="form-group">
+        <label>网站名称</label>
+        <input type="text" id="websiteName" placeholder="评论时展示的网站名称">
+      </div>
+      <div class="form-group">
+        <label>网站邮箱</label>
+        <input type="email" id="websiteEmail" placeholder="用于联系的邮箱地址 (如：example@email.com)">
+      </div>
+      <div class="form-group">
+        <label>网站地址</label>
+        <input type="url" id="websiteUrl" placeholder="您的网站地址 (如：https://www.example.com)">
+      </div>
+      <div class="form-group">
+        <label>网站描述</label>
+        <input type="text" id="websiteDesc" placeholder="您网站的简短描述">
+      </div>
+      <div class="form-group">
+        <label>关键词</label>
+        <input type="text" id="websiteKeywords" placeholder="用逗号分隔的关键词">
+      </div>
+      <button class="btn btn-primary btn-full" id="saveWebsiteBtn">保存网站信息</button>
+    </div>
+    
+    <div class="import-export-container">
+      <p class="import-export-tip">支持JSON导入，兼容旧版格式</p>
+      <div class="import-export-actions">
+        <button class="btn btn-secondary" id="importWebsitesBtn">导入网站数据</button>
+        <button class="btn btn-secondary" id="exportWebsitesBtn">导出网站数据</button>
+        <input type="file" id="importWebsitesInput" accept=".json" style="display: none;">
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div id="linksTab" class="settings-tab-panel">
+  <div class="card">
+    <h2 class="section-title">外链管理</h2>
+
+    <div class="admin-toolbar">
+      <div class="admin-search-row">
+        <input type="text" id="externalLinkSearch" placeholder="按名称搜索外链">
+        <button class="btn btn-secondary" id="addExternalLinkBtn">新增外链</button>
+      </div>
+      <div class="admin-stats">
+        <span>全部 <span class="admin-stat" id="externalLinkTotalCount">0</span></span>
+        <span>当前筛选 <span class="admin-stat" id="externalLinkFilteredCount">0</span></span>
+      </div>
+    </div>
+    <div class="locked-link-note" id="externalLinkAccessNote">
+      未授权版本仅显示前 50 条真实外链，后续资源会隐藏 URL 与名称。
+    </div>
+
+    <div class="website-editor" id="externalLinkEditor" style="display: none;">
+      <div class="website-editor-header">
+        <span class="website-editor-title" id="externalLinkEditorTitle">新增外链</span>
+        <div class="editor-header-actions">
+          <button class="close-editor-btn" id="closeExternalLinkEditorBtn" type="button">关闭</button>
+          <button class="delete-btn" id="deleteExternalLinkBtn" title="删除外链">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>外链名称</label>
+        <input type="text" id="externalLinkName" placeholder="例如：example.com">
+      </div>
+      <div class="form-group">
+        <label>外链地址</label>
+        <input type="url" id="externalLinkUrl" placeholder="https://www.example.com/page">
+      </div>
+      <div class="form-group">
+        <label>类型</label>
+        <input type="text" id="externalLinkKeywords" placeholder="blog_comment">
+      </div>
+      <div class="form-group">
+        <label>备注</label>
+        <input type="text" id="externalLinkDesc" placeholder="外链策略或备注">
+      </div>
+      <button class="btn btn-primary btn-full" id="saveExternalLinkBtn">保存外链</button>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table external-link-admin-table">
+        <colgroup>
+          <col style="width: 28%;">
+          <col style="width: 44%;">
+          <col style="width: 14%;">
+          <col style="width: 14%;">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>名称</th>
+            <th>URL</th>
+            <th>类型</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="externalLinkList"></tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <span id="externalLinkPaginationInfo">共 0 条，显示 0-0</span>
+      <div class="pagination-controls">
+        <button class="page-btn" id="externalLinkPrevPageBtn">上一页</button>
+        <span class="page-indicator" id="externalLinkPageIndicator">1 / 1</span>
+        <button class="page-btn" id="externalLinkNextPageBtn">下一页</button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div id="modelTab" class="settings-tab-panel">
+  <div class="card">
+    <h2 class="section-title">API 设置</h2>
+    
+    <div class="form-group">
+      <label>选择API提供商</label>
+      <select id="apiProvider">
+        <option value="siliconflow">硅基流动</option>
+        <option value="openai">OpenAI</option>
+        <option value="deepseek">DeepSeek</option>
+        <option value="zhipu">智谱AI</option>
+        <option value="zhipuCoding">智谱 Coding Plan</option>
+        <option value="gemini">Google Gemini</option>
+        <option value="openrouter">OpenRouter</option>
+        <option value="custom">自定义 API</option>
+      </select>
+    </div>
+    
+    <div class="api-link" id="apiLinkRow">
+      <span>获取API控制台链接</span>
+      <a id="apiProviderLink" href="#" target="_blank">前往获取密钥</a>
+      <span class="provider-badge" id="providerBadge" style="display: none;">aff 链接</span>
+    </div>
+    
+    <div class="form-group" id="customUrlGroup" style="display: none;">
+      <label>自定义 API 地址</label>
+      <input type="text" id="apiBaseUrl" placeholder="https://api.example.com/v1">
+    </div>
+    
+    <div class="form-group">
+      <label id="apiKeyLabel">API密钥</label>
+      <div class="input-with-toggle">
+        <input type="password" id="apiKey" placeholder="输入您的API密钥">
+        <button class="toggle-btn" id="toggleApiKey" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label id="modelLabel">模型选择</label>
+      <select id="modelSelect">
+        <option value="Qwen/Qwen2.5-72B-Instruct" selected>Qwen/Qwen2.5-72B-Instruct</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <div class="input-with-btn">
+        <input type="text" id="customModelInput" placeholder="例如：Qwen/Qwen2.5-VL-72B-Instruct">
+        <button class="btn btn-secondary" id="addModelBtn" type="button">添加模型</button>
+      </div>
+      <p class="model-hint">支持自定义模型名，需与账户可用模型一致</p>
+    </div>
+    
+    <div class="test-row">
+      <button class="btn btn-secondary" id="testConnectionBtn">API连接</button>
+      <span class="test-status" id="testStatus"></span>
+    </div>
+  </div>
+  </div>
+  
+  <div class="success-message" id="successMessage">
+    设置已成功保存！
+  </div>
+  
+  <div class="btn-container">
+    <button class="btn btn-secondary" id="backBtn">返回</button>
+    <button class="btn btn-primary" id="saveBtn">保存设置</button>
+  </div>
+  
+  <script src="external-links-data.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>
