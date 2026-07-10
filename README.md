@@ -42,6 +42,36 @@ The extension supports OpenAI-compatible chat completion endpoints. Configure th
 
 Supported provider presets include OpenAI-compatible services such as OpenAI, DeepSeek, SiliconFlow, Zhipu, Gemini-compatible endpoints, OpenRouter, and custom base URLs.
 
+Default API/model settings can also be hard-coded in `src/api-models-config.js`. Edit `window.API_MODELS_CONFIG.defaultSettings` to set the default provider, model, custom base URL, and optional local API key. Set `forceDefaultSettings: true` when you want this file to override API settings already saved in local browser storage.
+
+## External Link Resources
+
+Built-in backlink resources are configured in `src/external-links-data.js`.
+
+Edit `window.PRELOADED_EXTERNAL_LINKS` directly to add, remove, or update links:
+
+```js
+{
+  name: "Example Site",
+  email: "",
+  url: "https://example.com/profile/demo",
+  text: "profile | strategy: url_field",
+  desc: "Profile backlink resource",
+  keywords: "profile, url_field"
+}
+```
+
+Field reference:
+
+- `name`: display name shown in the external link list.
+- `email`: optional contact email.
+- `url`: backlink target URL to open.
+- `text`: short type or strategy note used by the UI.
+- `desc`: description shown in settings/admin views.
+- `keywords`: searchable tags, usually comma-separated.
+
+The extension copies this preloaded list into `chrome.storage.local` during initialization. If the extension was already loaded before editing the file, reset/import the link data from the settings page or clear the extension's local storage to apply the new defaults.
+
 ## Permissions
 
 The extension requests:
@@ -56,4 +86,4 @@ Because the extension can read page content and fill forms, review the permissio
 
 ## Notes
 
-This repository currently contains the extension distribution files directly under `src/`. The JavaScript files are minified/obfuscated build artifacts, so future feature work is easier if the original source files or build pipeline are restored.
+This repository currently contains the extension distribution files directly under `src/`. Most JavaScript files are minified/obfuscated build artifacts, so future feature work is easier if the original source files or build pipeline are restored. `src/external-links-data.js` has been expanded into an editable data file for manual backlink configuration.
